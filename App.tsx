@@ -98,30 +98,31 @@ const styles = StyleSheet.create({
   innerContainer1: {
     backgroundColor: 'red',
     height: '100%',
-    width: '25%',
+    width: '24%',
     borderRadius: 10,
   },
   innerContainer2: {
     backgroundColor: 'red',
     height: '100%',
-    width: '25%',
+    width: '24%',
     borderRadius: 10,
   },
   innerContainer3: {
     backgroundColor: 'red',
     height: '100%',
-    width: '25%',
+    width: '24%',
     borderRadius: 10,
   },
   innerContainer4: {
     backgroundColor: 'red',
     height: '100%',
-    width: '22%',
+    width: '24%',
     borderRadius: 10,
   },
   container12: {
+    flex: 1,
     flexDirection: 'row',
-    //justifyContent: 'space-between',
+    justifyContent: 'space-between',
   },
   innerContainer21: {
     backgroundColor: 'red',
@@ -133,7 +134,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'red',
     height: 80,
     width: 100,
-    marginLeft: 90,
+    //marginLeft: 90,
     borderRadius: 10,
   },
   container13: {
