@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'red',
     height: '100%',
     width: '50%',
-    marginLeft: 88,
+    //marginLeft: 88,
     borderRadius: 10,
   },
   container2: {
