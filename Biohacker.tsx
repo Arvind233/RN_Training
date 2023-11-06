@@ -1,3 +1,7 @@
+import {NavigationContainer} from '@react-navigation/native';
+
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+
 import {
   View,
   Text,
@@ -6,10 +10,11 @@ import {
   TouchableOpacity,
   Image,
   Alert,
+  Button,
 } from 'react-native';
 import React, {useState} from 'react';
 
-export default function Biohacker() {
+export default function Biohacker({navigation}) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -62,6 +67,13 @@ export default function Biohacker() {
       <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
         <Text style={{color: 'white', fontWeight: 'bold'}}>Log In</Text>
       </TouchableOpacity>
+
+      <View>
+        <Button
+          title="Go to MY TO DO LIST"
+          onPress={() => navigation.navigate('Parent')}
+        />
+      </View>
     </View>
   );
 }

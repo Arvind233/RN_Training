@@ -5,6 +5,7 @@
  * @format
  */
 
+import {NavigationContainer} from '@react-navigation/native';
 import React, {useState} from 'react';
 import type {PropsWithChildren} from 'react';
 import {

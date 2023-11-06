@@ -1,169 +1,107 @@
-import React, {useState} from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  FlatList,
-  StyleSheet,
-  Alert,
-  ImageBackground,
-} from 'react-native';
+import * as React from 'react';
+import {Button, View} from 'react-native';
+import {createDrawerNavigator} from '@react-navigation/drawer';
+import {NavigationContainer} from '@react-navigation/native';
 
-const App = () => {
-  const [task, setTask] = useState('');
-  const [tasks, setTasks] = useState([]);
-
-  const handleAddTask = () => {
-    if (task) {
-      setTasks([...tasks, {text: task, iscompleted: false}]);
-      setTask('');
-    } else {
-      Alert.alert('Please Enter Any Tasks');
-    }
-  };
-
-  const handleCompleteTask = index => {
-    const updatedTasks = [...tasks];
-    updatedTasks[index].iscompleted = !updatedTasks[index].iscompleted;
-    setTasks(updatedTasks);
-  };
-
-  const renderItem = ({item, index}) => (
-    <View style={styles.task}>
-      <Text
-        style={[
-          styles.itemList,
-          item.iscompleted && {
-            textDecorationLine: 'line-through',
-            color: 'gray',
-          },
-        ]}>
-        {item.text}
-      </Text>
-      <View style={styles.taskButtons}>
-        <TouchableOpacity
-          onPress={() => handleCompleteTask(index)}
-          disabled={item.iscompleted}>
-          <Text
-            style={[
-              styles.completeButton,
-              item.iscompleted ? {color: 'black'} : {color: 'green'},
-            ]}>
-            {item.iscompleted ? '' : 'Complete'}
-          </Text>
-        </TouchableOpacity>
-      </View>
-    </View>
-  );
-
+function HomeScreen({navigation}) {
   return (
-    <View style={{flex: 1}}>
-      <ImageBackground
-        source={require('./images/bg16.png')}
-        style={{flex: 1}}
-        resizeMode="cover">
-        <View style={styles.container}>
-          <Text style={styles.heading}>MY TO DO LIST</Text>
-          <Text style={styles.title}>Please Enter Your Tasks Below!!</Text>
-
-          <TextInput
-            style={styles.input}
-            placeholder="Enter To Do...."
-            placeholderTextColor={'black'}
-            value={task}
-            onChangeText={text => setTask(text)}
-          />
-
-          <TouchableOpacity style={styles.addButton} onPress={handleAddTask}>
-            <Text style={styles.addButtonText}>Add Task</Text>
-          </TouchableOpacity>
-
-          <Text style={styles.headingText}>All Tasks are listed below :</Text>
-
-          <FlatList
-            data={tasks}
-            renderItem={renderItem}
-            keyExtractor={(item, index) => index.toString()}
-          />
-        </View>
-      </ImageBackground>
+    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+      <Button
+        onPress={() => navigation.navigate('Notifications')}
+        title="Go to notifications"
+      />
     </View>
   );
-};
+}
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 15,
-    //marginTop: 40,
-    //backgroundColor: 'blue',
-    rowGap: 10,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
-    color: 'black',
-  },
-  heading: {
-    fontSize: 40,
-    fontWeight: 'bold',
-    marginBottom: 30,
-    color: '#001965',
-    alignSelf: 'center',
-    fontFamily: 'Poppins',
-  },
-  input: {
-    borderWidth: 2,
-    borderColor: 'black',
-    padding: 10,
-    marginBottom: 10,
-    borderRadius: 10,
-    fontSize: 25,
-    color: 'black',
-  },
-  addButton: {
-    backgroundColor: 'white',
-    padding: 10,
-    borderRadius: 20,
-    marginBottom: 10,
-    borderWidth: 2,
-    marginTop: 15,
-  },
-  addButtonText: {
-    color: 'black',
-    fontWeight: 'bold',
-    textAlign: 'center',
-    fontSize: 25,
-  },
-  headingText: {
-    fontSize: 20,
-    fontWeight: '600',
-    color: 'black',
-    marginBottom: 20,
-    textShadowColor: 'green',
-  },
-  task: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 15,
-    fontSize: 18,
-  },
-  itemList: {
-    fontSize: 23,
-    width: '60%',
-    color: 'black',
-  },
-  taskButtons: {
-    flexDirection: 'row',
-  },
-  completeButton: {
-    color: 'red',
-    fontWeight: 'bold',
-    fontSize: 23,
-  },
-});
+function NotificationsScreen({navigation}) {
+  return (
+    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+      <Button onPress={() => navigation.goBack()} title="Go back home" />
+    </View>
+  );
+}
 
-export default App;
+const Drawer = createDrawerNavigator();
+
+export default function App() {
+  return (
+    <NavigationContainer>
+      <Drawer.Navigator initialRouteName="Home">
+        <Drawer.Screen name="Home" component={HomeScreen} />
+        <Drawer.Screen name="Notifications" component={NotificationsScreen} />
+      </Drawer.Navigator>
+    </NavigationContainer>
+  );
+}
+
+// import React, {useState} from 'react';
+// import {NavigationContainer} from '@react-navigation/native';
+// import Parent from './Parent';
+// import {createNativeStackNavigator} from '@react-navigation/native-stack';
+// import {Button, View, Text, ImageBackground} from 'react-native';
+// import Biohacker from './Biohacker';
+
+// import {createDrawerNavigator} from 'react-navigation/drawer';
+
+// const Drawer = createDrawerNavigator();
+
+// function MyDrawer() {
+//   return (
+//     <NavigationContainer>
+//       <Drawer.Navigator>
+//         <Drawer.Screen name="Biohacker" component={Biohacker} />
+//         <Drawer.Screen name="Article" component={Parent} />
+//       </Drawer.Navigator>
+//     </NavigationContainer>
+//   );
+// }
+// export default MyDrawer;
+
+// const Stack = createNativeStackNavigator();
+
+// function HomeScreen({navigation}) {
+//   return (
+//     <View
+//       style={{
+//         flex: 1,
+//         // alignItems: 'center',
+//         // justifyContent: 'center',
+//         // backgroundColor: 'gray',
+//       }}>
+//       <ImageBackground
+//         source={require('./images/welcome1.png')}
+//         resizeMode="cover"
+//         style={{flex: 1}}>
+//         <Text style={{fontSize: 40, marginBottom: 10, textAlign: 'center'}}>
+//           Welcome Screen
+//         </Text>
+//         <Button
+//           title="Go to Biohacker"
+//           onPress={() => navigation.navigate('Biohacker')}
+//         />
+//       </ImageBackground>
+//     </View>
+//   );
+// }
+
+// const App = () => {
+//   return (
+//     <NavigationContainer>
+//       <Stack.Navigator initialRouteName="HomeScreen">
+//         <Stack.Screen name="Home" component={HomeScreen} />
+//         <Stack.Screen name="Biohacker" component={Biohacker} />
+//         <Stack.Screen
+//           name="Parent"
+//           component={Parent}
+//           options={{title: 'Good Morningg!!!'}}
+//         />
+//       </Stack.Navigator>
+//     </NavigationContainer>
+//   );
+// };
+// // <NavigationContainer>
+// //   <Parent />
+// // </NavigationContainer>ß
+
+// export default App;
