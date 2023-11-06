@@ -16,14 +16,14 @@ const RegisterScreen = ({navigation}) => {
   const [firstName, setFirstName] = useState('');
   const [email, setEmail] = useState('');
   const [selected, setSelected] = React.useState('');
-  const [value, setValue] = useState(0);
+  const [value, setValue] = useState('');
 
   const Register = () => {
     navigation.navigate('HomeScreen', {
       name: firstName,
       email: email,
-      gender: dataRadio,
-      dropdown: data,
+      gender: value,
+      dropdown: selected,
     });
   };
 
@@ -34,8 +34,8 @@ const RegisterScreen = ({navigation}) => {
   ];
 
   const dataRadio = [
-    {label: 'Male', value: 0},
-    {label: 'Female', value: 1},
+    {label: 'Male', value: 'male'},
+    {label: 'Female', value: 'female'},
   ];
 
   return (

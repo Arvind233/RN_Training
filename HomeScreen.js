@@ -13,8 +13,8 @@ const HomeScreen = ({route}) => {
     <View style={styles.mainConatiner}>
       <Text style={{fontSize: 20}}>Name :{name}</Text>
       <Text style={{fontSize: 20}}>Email :{email}</Text>
-      {/* <Text style={{fontSize: 20}}>Gender :{gender}</Text>
-      <Text style={{fontSize: 20}}>Date Of Birth :{dropdown}</Text> */}
+      <Text style={{fontSize: 20}}>Gender :{gender}</Text>
+      <Text style={{fontSize: 20}}>Date Of Birth :{dropdown}</Text>
     </View>
   );
 };
