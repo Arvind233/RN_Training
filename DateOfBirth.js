@@ -1,7 +1,5 @@
-// https://www.npmjs.com/package/react-native-modal-datetime-picker?activeTab=readme
-
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, Alert} from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 
 const DateOfBirth = () => {
@@ -17,7 +15,7 @@ const DateOfBirth = () => {
   };
 
   const handleConfirm = date => {
-    console.warn('A date has been picked: ', date);
+    //console.warn('A date has been picked: ', date);
     const dob = new Date(date);
     const splitTime = dob.toISOString().split('T');
     const splitdate = splitTime[0].split('-');
@@ -58,6 +56,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 5,
     fontSize: 20,
+    alignSelf: 'center',
     //textDecorationLine: 'underline',
   },
 });

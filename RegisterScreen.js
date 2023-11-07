@@ -5,6 +5,7 @@ import {
   StyleSheet,
   TextInput,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import Header from './Header';
 import DateOfBirth from './DateOfBirth';
@@ -18,12 +19,30 @@ const RegisterScreen = ({navigation}) => {
   const [selected, setSelected] = React.useState('');
   const [value, setValue] = useState('');
 
+  const [hobbies, setHobbies] = useState([]);
+
   const Register = () => {
+    if (!firstName) {
+      Alert.alert('Error', 'Please Enter your Name');
+      return;
+    }
+
+    if (!email) {
+      Alert.alert('Error', 'Please Enter your Email');
+      return;
+    }
+
+    if (hobbies.length === 0) {
+      Alert.alert('Error', 'Please Select Atleast one Hobby');
+      return;
+    }
+
     navigation.navigate('HomeScreen', {
       name: firstName,
       email: email,
       gender: value,
       dropdown: selected,
+      hobbies: hobbies,
     });
   };
 
@@ -39,7 +58,7 @@ const RegisterScreen = ({navigation}) => {
   ];
 
   return (
-    <View>
+    <View style={styles.mainBox}>
       <Header />
       <View style={{backgroundColor: 'black'}}>
         <View style={{alignItems: 'center', width: '100%'}}>
@@ -54,6 +73,7 @@ const RegisterScreen = ({navigation}) => {
               placeholder="Enter Your Name"
               onChangeText={text => setFirstName(text)}
             />
+
             <TextInput
               style={styles.input}
               value={email}
@@ -71,19 +91,21 @@ const RegisterScreen = ({navigation}) => {
 
             <View style={{paddingHorizontal: 10, padding: 10}}>
               <Text style={{fontSize: 20, alignSelf: 'center'}}>
-                Select Your Community
+                Select Your Citizenship
               </Text>
               <SelectList
                 setSelected={value => setSelected(value)}
                 data={data}
-                placeholder={'Select Community'}
+                placeholder={'Select Citizenship'}
                 save="value"
               />
             </View>
 
             <DateOfBirth />
 
-            <Text style={{fontSize: 20, marginBottom: 15}}>Hobbies</Text>
+            <Text style={{fontSize: 20, marginBottom: 10, marginTop: 10}}>
+              Hobbies
+            </Text>
             <View style={styles.mainCheckBoxContainer}>
               <View style={styles.checkboxContainer}>
                 <CheckBox label="Reading" />
@@ -96,6 +118,7 @@ const RegisterScreen = ({navigation}) => {
                 <CheckBox label="Traveling" />
               </View>
             </View>
+
             <TouchableOpacity onPress={Register} style={styles.RegisterButton}>
               <Text style={{color: 'black', fontSize: 25, fontWeight: 'bold'}}>
                 Register
@@ -111,6 +134,10 @@ const RegisterScreen = ({navigation}) => {
 export default RegisterScreen;
 
 const styles = StyleSheet.create({
+  mainBox: {
+    flex: 1,
+    flexDirection: 'column',
+  },
   headerRegister: {
     color: 'white',
     fontSize: 45,
@@ -129,7 +156,7 @@ const styles = StyleSheet.create({
     width: '100%',
     borderTopLeftRadius: 130,
     borderTopRightRadius: 130,
-    paddingTop: 30,
+    paddingTop: 20,
     alignItems: 'center',
   },
   allInfoContainer: {
@@ -137,7 +164,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   radioText: {
-    fontSize: 10,
+    fontSize: 15,
     color: 'black',
     fontWeight: 'bold',
     fontSize: 15,
@@ -175,197 +202,3 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
 });
-
-// import React, {useState} from 'react';
-// import {
-//   View,
-//   Text,
-//   TextInput,
-//   StyleSheet,
-//   TouchableOpacity,
-// } from 'react-native';
-// //import RadioGroup from 'react-native-radio-buttons-group';
-// import CheckBox from 'react-native-checkbox';
-// import {RadioButton} from 'react-native-paper';
-// import {Dropdown} from 'react-native-element-dropdown';
-// import {DatePicker} from 'react-native-datepicker';
-
-// const data = [
-//   {label: 'Indian', value: 1},
-//   {label: 'Non-Indian', value: 2},
-// ];
-
-// function RegisterScreen() {
-//   const [firstName, setFirstName] = useState('');
-//   const [lastName, setLastName] = useState('');
-//   const [email, setEmail] = useState('');
-//   const [dateOfBirth, setDateOfBirth] = useState('');
-//   const [gender, setGender] = useState('male');
-//   const [checked, setChecked] = useState('');
-
-//   return (
-//     <View style={styles.mainContainer}>
-//       <View style={styles.Information}>
-//         <Text style={styles.Informationtext}>Please Enter Your Detalis!!</Text>
-//       </View>
-//       <TextInput
-//         style={styles.input}
-//         value={firstName}
-//         placeholder="Enter your first name"
-//         onChangeText={text => setFirstName(text)}
-//       />
-
-//       <TextInput
-//         style={styles.input}
-//         value={lastName}
-//         placeholder="Enter your last name"
-//         onChangeText={text => setLastName(text)}
-//       />
-
-//       <TextInput
-//         style={styles.input}
-//         value={email}
-//         placeholder="Enter your Email"
-//         onChangeText={text => setEmail(text)}
-//       />
-
-//       {/* <View style={styles.dateContainer}>
-//         <Text>Date Of Birth:</Text>
-//         <DatePicker
-//           //style={{width: 200}}
-//           date={dateOfBirth}
-//           mode="date"
-//           // placeholder="Select date"
-//           // format="YYYY-MM-DD"
-//           // minDate="1900-01-01"
-//           // maxDate="2023-12-31"
-//           // confirmBtnText="Confirm"
-//           // cancelBtnText="cancel"
-//           onDateChange={date => setDateOfBirth(date)}
-//         />
-//       </View> */}
-//       <View style={styles.dropdown1}>
-//         <Text style={{fontSize: 20, color: 'black', width: '50%'}}>
-//           Select Community
-//         </Text>
-//         <Dropdown
-//           style={styles.dropdownItem}
-//           data={data}
-//           placeholder="Community"
-//           labelField="label"
-//         />
-//       </View>
-//       <View style={styles.genderContainer}>
-//         <Text style={{fontSize: 20, marginBottom: 15}}>Gender</Text>
-//         <View style={{flexDirection: 'row'}}>
-//           <RadioButton
-//             value="first"
-//             status={checked === 'first' ? 'checked' : 'unchecked'}
-//             onPress={() => setChecked('first')}
-//           />
-//           <Text>Male</Text>
-//         </View>
-//         <View style={{flexDirection: 'row'}}>
-//           <RadioButton
-//             value="second"
-//             label="Female"
-//             status={checked === 'second' ? 'checked' : 'unchecked'}
-//             onPress={() => setChecked('second')}
-//           />
-//           <Text>Female</Text>
-//         </View>
-//       </View>
-
-//       <Text style={{fontSize: 20, marginBottom: 15}}>Hobbies</Text>
-//       <View style={styles.mainCheckBoxContainer}>
-//         <View style={styles.checkboxContainer}>
-//           <CheckBox label="Reading" />
-//         </View>
-
-//         <View style={styles.checkboxContainer}>
-//           <CheckBox label="Singing" />
-//         </View>
-//         <View style={styles.checkboxContainer}>
-//           <CheckBox label="Traveling" />
-//         </View>
-//       </View>
-
-//       <TouchableOpacity style={styles.registerButton}>
-//         <Text style={styles.registerButtonText}>Register</Text>
-//       </TouchableOpacity>
-//     </View>
-//   );
-// }
-
-// const styles = StyleSheet.create({
-//   Information: {
-//     width: '100%',
-//     marginBottom: 15,
-//   },
-//   Informationtext: {
-//     fontSize: 30,
-//     fontWeight: 'bold',
-//     color: 'blue',
-//   },
-//   mainContainer: {
-//     flex: 1,
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//     padding: 15,
-//     //paddingHorizontal: 20,
-//     //backgroundColor: 'green',
-//   },
-//   input: {
-//     width: '100%',
-//     height: 40,
-//     borderRadius: 15,
-//     borderColor: 'black',
-//     borderWidth: 1,
-//     marginBottom: 10,
-//     paddingHorizontal: 10,
-//   },
-//   mainCheckBoxContainer: {
-//     alignSelf: 'flex-start',
-//     //backgroundColor: 'yellow',
-//     width: '100%',
-//     flexDirection: 'row',
-//     flexWrap: 'wrap',
-//   },
-//   checkboxContainer: {
-//     flexDirection: 'row',
-//     alignItems: 'center',
-//     marginBottom: 10,
-//   },
-//   registerButton: {
-//     backgroundColor: 'white',
-//     padding: 10,
-//     borderRadius: 20,
-//     marginBottom: 10,
-//     borderWidth: 2,
-//     marginTop: 15,
-//   },
-//   registerButtonText: {
-//     color: 'black',
-//     fontWeight: 'bold',
-//     textAlign: 'center',
-//     fontSize: 25,
-//   },
-//   genderContainer: {
-//     alignSelf: 'flex-start',
-//     //backgroundColor: 'green',
-//     width: '100%',
-//   },
-//   dropdown1: {
-//     width: '100%',
-//     flexDirection: 'row',
-//     marginTop: 10,
-//     marginBottom: 10,
-//   },
-//   dropdownItem: {
-//     paddingLeft: 15,
-//     width: '35%',
-//     //backgroundColor: 'yellow',
-//   },
-// });
-
-// export default RegisterScreen;
