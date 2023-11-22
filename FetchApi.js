@@ -17,28 +17,28 @@ export default function FetchApi() {
   // }, []);
 
   useEffect(() => {
-    axios;
-    // .get('https://jsonplaceholder.typicode.com/todos')
-    // .then(res => {
-    //   setData(res.data);
-    // })
-    // .catch(err => {
-    //   console.log('Error in Fetching the data:', err);
-    // });
+    axios
+      .get('https://jsonplaceholder.typicode.com/photos')
+      .then(res => {
+        setData(res.data);
+      })
+      .catch(err => {
+        console.log('Error in Fetching the data:', err);
+      });
 
-    axios.post(
-      'https://jsonplaceholder.typicode.com/posts',
-      {
-        id: 'value1',
-        title: 'value2',
-        //other data key value pairs
-      },
-      {
-        headers: {
-          'api-token': 'xyz',
-        },
-      },
-    );
+    // axios.post(
+    //   'https://jsonplaceholder.typicode.com/posts',
+    //   {
+    //     id: 'value1',
+    //     title: 'value2',
+    //     //other data key value pairs
+    //   },
+    //   {
+    //     headers: {
+    //       'api-token': 'xyz',
+    //     },
+    //   },
+    // );
   }, []);
 
   return (
@@ -56,7 +56,7 @@ export default function FetchApi() {
               }}>
               <Text style={{fontSize: 30}}>{item.id}</Text>
               <Text style={{fontSize: 18}}>{item.title}</Text>
-              <Text style={{fontSize: 15}}>{item.param2}</Text>
+              <Text style={{fontSize: 15}}>{item.body}</Text>
             </View>
           )}
         />
