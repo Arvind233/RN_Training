@@ -11,8 +11,7 @@ import Header from './Header';
 
 const RegisterScreen = ({navigation}) => {
   const [firstName, setFirstName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
+
   const [password, setPassword] = useState('');
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
@@ -23,11 +22,6 @@ const RegisterScreen = ({navigation}) => {
   const Register = () => {
     if (!firstName) {
       Alert.alert('Error', 'Please Enter your Name');
-      return;
-    }
-
-    if (!email) {
-      Alert.alert('Error', 'Please Enter your Email');
       return;
     }
 
@@ -59,33 +53,14 @@ const RegisterScreen = ({navigation}) => {
 
             <TextInput
               style={styles.input}
-              value={email}
-              placeholder="Enter Your email"
-              onChangeText={text => setEmail(text)}
-            />
-
-            <TextInput
-              style={styles.input}
-              value={phoneNumber}
-              placeholder="Enter Your Phone Number"
-              onChangeText={text => setPhoneNumber(text)}
-            />
-
-            <TextInput
-              style={styles.input}
               secureTextEntry={!isPasswordVisible}
               value={password}
               onChangeText={text => setPassword(text)}
               placeholder="Enter your password"></TextInput>
 
             <TouchableOpacity onPress={Register} style={styles.RegisterButton}>
-              <Text
-                style={{
-                  color: 'black',
-                  fontSize: 25,
-                  fontWeight: 'bold',
-                }}>
-                Sign up
+              <Text style={{color: 'black', fontSize: 25, fontWeight: 'bold'}}>
+                Register
               </Text>
             </TouchableOpacity>
           </View>

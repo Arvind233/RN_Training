@@ -29,7 +29,8 @@ const App = () => {
         <Stack.Screen
           name="RegisterScreen"
           component={RegisterScreen}
-          options={{title: 'Registration Form'}}
+          setOptions={{title: ''}}
+          headerShown={false}
         />
       </Stack.Navigator>
     </NavigationContainer>
