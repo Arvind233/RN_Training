@@ -4,21 +4,11 @@ import {View, Text, Button, TouchableOpacity, StyleSheet} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {login, logout} from '../actions/actions';
 
-const HomeScreen = ({route, navigation}) => {
+const HomeScreen = ({navigation}) => {
   const dispatch = useDispatch();
   const user = useSelector(state => state.user);
 
-  //   const {user: passedUser} = route.params || {};
-
-  //   useEffect(() => {
-  //     if (passedUser) {
-  //       dispatch(login(passedUser));
-  //     }
-  //   }, [dispatch, passedUser]);
-
   const handleLogout = () => {
-    // Dispatch logout action
-    // dispatch(login());
     dispatch(logout());
 
     // Navigate back to the login screen
@@ -30,7 +20,7 @@ const HomeScreen = ({route, navigation}) => {
       <Text style={{fontSize: 60}}>Welcome</Text>
       <Text style={{fontSize: 30}}>Email: {user ? user.email : ''}</Text>
       <Text style={{fontSize: 30}}>Password: {user ? user.password : ''}</Text>
-      {/* <Button title="Logout" onPress={handleLogout} /> */}
+
       <TouchableOpacity onPress={handleLogout} style={styles.LoginButton}>
         <Text
           style={{

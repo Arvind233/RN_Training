@@ -10,7 +10,8 @@ import {
   Alert,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {login} from '../actions/actions';
+import {login, toggleRememberMe} from '../actions/actions';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const RememberMeCheckbox = ({value, onToggle}) => {
   const checkboxStyle = {
@@ -40,45 +41,72 @@ const LoginScreen = ({navigation}) => {
   const dispatch = useDispatch();
 
   const savedCredentials = useSelector(state => state.user || {});
-  const registeredUsers = useSelector(state => state.registeredUsers || []);
+  const registeredUsers = useSelector(state => state.registeredUsers);
+  // const rememberMe = useSelector(state => state.rememberMe);
+
+  // const toggleRememberMe = () => {
+  //   dispatch(toggleRememberMe());
+  // };
 
   useEffect(() => {
-    if (rememberMe && savedCredentials && savedCredentials.email) {
-      setEmail(savedCredentials.email || '');
-      setPassword(savedCredentials.password || '');
-    }
-  }, [rememberMe, savedCredentials]);
+    const loadRememberMe = async () => {
+      try {
+        const rememberMeValue = await AsyncStorage.getItem('rememberMe');
+        setRememberMe(rememberMeValue === 'true');
+        if (rememberMeValue === 'true' && savedCredentials.email) {
+          setEmail(savedCredentials.email || '');
+          setPassword(savedCredentials.password || '');
+        }
+      } catch (error) {
+        console.error('error loading remember from asysnc', error);
+      }
+    };
+    loadRememberMe();
+    // if (rememberMe && savedCredentials && savedCredentials.email) {
+    //   setEmail(savedCredentials.email || '');
+    //   setPassword(savedCredentials.password || '');
+    // } else {
+    //   setEmail('');
+    //   setPassword('');
+    // }
+  }, [savedCredentials]);
 
   const handleLogin = () => {
+    if (!email) {
+      Alert.alert('Error', 'Please Enter your Email');
+      return;
+    }
+
+    if (!password) {
+      Alert.alert('Error', 'Please Enter your Phone Number');
+      return;
+    }
     // Implement your authentication logic here
 
     const user = {email, password};
     console.log(user.email);
     console.log(registeredUsers);
 
-    // const matchingUsers = registeredUsers.filter(registeredUser => {
-    //   console.log(registeredUser);
-    //   return (
-    //     registeredUser.email === user.email &&
-    //     registeredUser.password === user.password
-    //   );
-    // });
-    const matchingUsers =
-      registeredUsers[0].email == user.email &&
-      registeredUsers[0].password === user.password;
+    const matchingUsers = registeredUsers.filter(
+      registeredUser =>
+        registeredUser.email == user.email &&
+        registeredUser.password === user.password,
+    );
     console.log(matchingUsers);
 
-    if (matchingUsers) {
-      dispatch(login(user));
-
-      // Dispatch login action
+    if (matchingUsers.length > 0) {
       dispatch(login(user));
 
       if (rememberMe) {
+        // setRememberMe(true);
         // Save credentials in AsyncStorage or secure storage
-        // AsyncStorage.setItem('savedCredentials', JSON.stringify(user));
+        AsyncStorage.setItem('rememberMe', 'true');
+        AsyncStorage.setItem('savedCredentials', JSON.stringify(user));
+      } else {
+        AsyncStorage.setItem('rememberMe', 'false');
+        AsyncStorage.removeItem('savedCredentials');
       }
-      navigation.navigate('Home');
+      navigation.navigate('Home', {user});
     } else {
       Alert.alert(
         'user not found',
@@ -91,8 +119,9 @@ const LoginScreen = ({navigation}) => {
     navigation.navigate('SignUp');
   };
 
-  const toggleRememberMe = () => {
-    setRememberMe(!rememberMe);
+  const handleRememberMe = () => {
+    dispatch(toggleRememberMe());
+    // setRememberMe(!rememberMe);
   };
 
   return (
@@ -113,7 +142,7 @@ const LoginScreen = ({navigation}) => {
 
       <View
         style={{flexDirection: 'row', alignItems: 'center', marginBottom: 10}}>
-        <RememberMeCheckbox value={rememberMe} onToggle={toggleRememberMe} />
+        <RememberMeCheckbox value={rememberMe} onToggle={handleRememberMe} />
         <Text>Remember Me</Text>
       </View>
 
@@ -182,92 +211,3 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
 });
-
-// // LoginScreen.js
-// import React, { useState, useEffect } from 'react';
-// import { View, TextInput, Button, TouchableOpacity, Text } from 'react-native';
-// import { useDispatch, useSelector } from 'react-redux';
-// import { login } from './actions';
-
-// const RememberMeCheckbox = ({ value, onToggle }) => {
-//   const checkboxStyle = {
-//     width: 20,
-//     height: 20,
-//     borderWidth: 1,
-//     borderRadius: 5,
-//     borderColor: 'black',
-//     marginRight: 10,
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//   };
-
-//   return (
-//     <TouchableOpacity onPress={onToggle}>
-//       <View style={[checkboxStyle, value && { backgroundColor: 'black' }]}>
-//         {value && <Text style={{ color: 'white' }}>✔️</Text>}
-//       </View>
-//     </TouchableOpacity>
-//   );
-// };
-
-// const LoginScreen = ({ navigation }) => {
-//   const [email, setEmail] = useState('');
-//   const [password, setPassword] = useState('');
-//   const [rememberMe, setRememberMe] = useState(false);
-//   const dispatch = useDispatch();
-//   const savedCredentials = useSelector((state) => state.user);
-
-//   useEffect(() => {
-//     // Pre-fill email and password if "Remember Me" is checked and credentials are saved
-//     if (rememberMe && savedCredentials) {
-//       setEmail(savedCredentials.email);
-//       setPassword(savedCredentials.password);
-//     }
-//   }, [rememberMe, savedCredentials]);
-
-//   const handleLogin = () => {
-//     // Implement your authentication logic here
-//     const user = { email, password }; // Replace this with actual authentication
-
-//     // Dispatch login action
-//     dispatch(login(user));
-
-//     // Save credentials if "Remember Me" is checked
-//     if (rememberMe) {
-//       // Save credentials in AsyncStorage or secure storage
-//       // AsyncStorage.setItem('savedCredentials', JSON.stringify(user));
-//     }
-//   };
-
-//   const navigateToSignUp = () => {
-//     navigation.navigate('SignUp');
-//   };
-
-//   const toggleRememberMe = () => {
-//     setRememberMe(!rememberMe);
-//   };
-
-//   return (
-//     <View>
-//       <TextInput
-//         placeholder="Email"
-//         value={email}
-//         onChangeText={(text) => setEmail(text)}
-//       />
-//       <TextInput
-//         placeholder="Password"
-//         secureTextEntry
-//         value={password}
-//         onChangeText={(text) => setPassword(text)}
-//       />
-//       <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}>
-//         <RememberMeCheckbox value={rememberMe} onToggle={toggleRememberMe} />
-//         <Text>Remember Me</Text>
-//       </View>
-//       <Button title="Login" onPress={handleLogin} />
-//       <Button title="Sign Up" onPress={navigateToSignUp} />
-//     </View>
-//   );
-// };
-
-// export default LoginScreen;

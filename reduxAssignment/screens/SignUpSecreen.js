@@ -3,7 +3,6 @@ import {
   View,
   Text,
   TextInput,
-  Button,
   Alert,
   StyleSheet,
   TouchableOpacity,
@@ -24,7 +23,7 @@ const SignUpScreen = ({navigation}) => {
   const handleSignUp = () => {
     const newUser = {name, email, password, phone};
     console.log('new user', newUser);
-    dispatch(signUp(newUser));
+    // dispatch(signUp(newUser));
 
     if (!name) {
       Alert.alert('Error', 'Please Enter your Name');
@@ -46,11 +45,7 @@ const SignUpScreen = ({navigation}) => {
       return;
     }
 
-    // Implement your sign-up logic here
-    // For simplicity, let's assume sign-up is successful
-    // You should validate inputs and handle errors appropriately
-
-    dispatch(signUp());
+    dispatch(signUp(newUser));
 
     Alert.alert('Registration Successful', 'You can now log in!');
     // Navigate back to the login screen
