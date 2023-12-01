@@ -54,6 +54,7 @@ const SignUpScreen = ({navigation}) => {
 
   return (
     <View style={styles.mainContainer}>
+      <Text style={{fontSize: 45, marginBottom: 10}}>Register</Text>
       <TextInput
         style={styles.input}
         placeholder="Name"
