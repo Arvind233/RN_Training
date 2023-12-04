@@ -163,7 +163,7 @@
 // });
 
 // export default AddHobbies;
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -175,14 +175,11 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
-import SplashScreen from 'react-native-splash-screen';
 
 const AddHobbies = () => {
-  useEffect(() => {
-    SplashScreen.hide();
-  }, []);
-
+  
   const [users, setUsers] = useState([]);
+  console.log('users',users)
   const [modalVisible, setModalVisible] = useState(false);
   const [username, setUsername] = useState('');
   const [hobbies, setHobbies] = useState('');
@@ -197,7 +194,13 @@ const AddHobbies = () => {
       Alert.alert('Error', 'Please Enter your Hobbies');
       return;
     }
-    setUsers([...users, {username, hobbies: userHobbies.join(', ')}]);
+
+    const newUser = {
+      username,
+      hobbies: userHobbies.map(hobby => ({ name: hobby })),
+    };
+
+    setUsers([...users, newUser]);
     setModalVisible(false);
     setUsername('');
     setUserHobbies([]);
@@ -248,7 +251,7 @@ const AddHobbies = () => {
               <Text style={styles.buttonText}>Add</Text>
             </TouchableOpacity>
           </View>
-          <Text style={{fontSize: 20}}>Your Hobbies :- </Text>
+          <Text style={{ fontSize: 20 }}>Your Hobbies :- </Text>
 
           {userHobbies.map((hobby, index) => (
             <Text key={index} style={styles.hobbyText}>
@@ -265,10 +268,10 @@ const AddHobbies = () => {
       <FlatList
         data={users}
         keyExtractor={(item, index) => index.toString()}
-        renderItem={({item}) => (
+        renderItem={({ item }) => (
           <View style={styles.userContainer}>
             <Text style={styles.userInfo}>Username: {item.username}</Text>
-            <Text style={styles.userInfo}>Hobbies: {item.hobbies}</Text>
+            <Text style={styles.userInfo}>Hobbies: {item.hobbies.map(h => h.name).join(', ')}</Text>
           </View>
         )}
       />
@@ -282,7 +285,7 @@ const AddHobbies = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
+    container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
@@ -366,7 +369,6 @@ const styles = StyleSheet.create({
 });
 
 export default AddHobbies;
-
 // import React, {useState} from 'react';
 // import {
 //   View,
