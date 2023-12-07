@@ -10,6 +10,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import rootReducer from '../reducers/reducers';
 import {configureStore, applyMiddleware} from '@reduxjs/toolkit';
 import logger from 'redux-logger';
+
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,

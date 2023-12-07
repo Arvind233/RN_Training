@@ -10,7 +10,7 @@ import {
   Alert,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {login, toggleRememberMe} from '../actions/actions';
+import {login, toggleRememberMe, loginUser} from '../actions/actions';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const RememberMeCheckbox = ({value, onToggle}) => {
@@ -39,6 +39,7 @@ const LoginScreen = ({navigation}) => {
   const [password, setPassword] = useState();
   const [rememberMe, setRememberMe] = useState(false);
   const dispatch = useDispatch();
+  const authUserData = useSelector(state => state.rootReducer);
 
   const savedCredentials = useSelector(state => state.registeredUsers || {});
   const registeredUsers = useSelector(state => state.registeredUsers);
@@ -48,88 +49,122 @@ const LoginScreen = ({navigation}) => {
   //   dispatch(toggleRememberMe());
   // };
 
-  useEffect(() => {
-    const loadRememberMe = async () => {
-      try {
-        const rememberMeValue = await AsyncStorage.getItem('rememberMe');
-        setRememberMe(rememberMeValue === 'true');
-        if (rememberMeValue === 'true' && savedCredentials.email) {
-          setEmail(savedCredentials.email || '');
-          setPassword(savedCredentials.password || '');
-        } else {
-          setEmail('');
-          setPassword('');
-        }
-      } catch (error) {
-        console.error('error loading remember from asysnc', error);
-      }
-    };
-    loadRememberMe();
-    // if (rememberMe && savedCredentials && savedCredentials.email) {
-    //   setEmail(savedCredentials.email || '');
-    //   setPassword(savedCredentials.password || '');
-    // } else {
-    //   setEmail('');
-    //   setPassword('');
-    // }
-  }, [savedCredentials]);
+  // useEffect(() => {
+  //   const loadRememberMe = async () => {
+  //     try {
+  //       const rememberMeValue = await AsyncStorage.getItem('rememberMe');
+  //       setRememberMe(rememberMeValue === 'true');
+  //       if (rememberMeValue === 'true' && savedCredentials.email) {
+  //         setEmail(savedCredentials.email || '');
+  //         setPassword(savedCredentials.password || '');
+  //       } else {
+  //         setEmail('');
+  //         setPassword('');
+  //       }
+  //     } catch (error) {
+  //       console.error('error loading remember from asysnc', error);
+  //     }
+  //   };
+  //   loadRememberMe();
+  //   // if (rememberMe && savedCredentials && savedCredentials.email) {
+  //   //   setEmail(savedCredentials.email || '');
+  //   //   setPassword(savedCredentials.password || '');
+  //   // } else {
+  //   //   setEmail('');
+  //   //   setPassword('');
+  //   // }
+  // }, [savedCredentials]);
 
-  const handleLogin = () => {
-    if (!email) {
-      Alert.alert('Error', 'Please Enter your Email');
-      return;
-    }
+  // const handleLogin = () => {
+  //   if (!email) {
+  //     Alert.alert('Error', 'Please Enter your Email');
+  //     return;
+  //   }
 
-    if (!password) {
-      Alert.alert('Error', 'Please Enter your Phone Number');
-      return;
-    }
-    // Implement your authentication logic here
+  //   if (!password) {
+  //     Alert.alert('Error', 'Please Enter your Phone Number');
+  //     return;
+  //   }
+  //   // Implement your authentication logic here
 
-    const user = {email, password};
-    console.log(user.email);
-    console.log(registeredUsers);
+  //   const user = {email, password};
+  //   console.log(user.email);
+  //   console.log(registeredUsers);
 
-    const matchingUsers = registeredUsers.filter(
-      registeredUser =>
-        registeredUser.email == user.email &&
-        registeredUser.password === user.password,
-    );
-    console.log(matchingUsers);
+  //   const matchingUsers = registeredUsers.filter(
+  //     registeredUser =>
+  //       registeredUser.email == user.email &&
+  //       registeredUser.password === user.password,
+  //   );
+  //   console.log(matchingUsers);
 
-    if (matchingUsers.length > 0) {
-      dispatch(login(user));
+  //   if (matchingUsers.length > 0) {
+  //     dispatch(login(user));
 
-      if (rememberMe) {
-        // setRememberMe(true);
-        // Save credentials in AsyncStorage or secure storage
-        AsyncStorage.setItem('rememberMe', 'true');
-        AsyncStorage.setItem('savedCredentials', JSON.stringify(user));
-      } else {
-        AsyncStorage.setItem('rememberMe', 'false');
-        AsyncStorage.removeItem('savedCredentials');
-      }
-      navigation.navigate('Home', {user});
-    } else {
-      Alert.alert(
-        'user not found',
-        'User information not found. Please signup.',
-      );
-    }
+  //     if (rememberMe) {
+  //       // setRememberMe(true);
+  //       // Save credentials in AsyncStorage or secure storage
+  //       AsyncStorage.setItem('rememberMe', 'true');
+  //       AsyncStorage.setItem('savedCredentials', JSON.stringify(user));
+  //     } else {
+  //       AsyncStorage.setItem('rememberMe', 'false');
+  //       AsyncStorage.removeItem('savedCredentials');
+  //     }
+  //     navigation.navigate('Home', {user});
+  //   } else {
+  //     Alert.alert(
+  //       'user not found',
+  //       'User information not found. Please signup.',
+  //     );
+  //   }
+  // };
+
+  // const navigateToSignUp = () => {
+  //   navigation.navigate('SignUp');
+  // };
+
+  const handleRememberMe = () => {
+    // dispatch(toggleRememberMe());
+    setRememberMe(!rememberMe);
   };
 
-  const navigateToSignUp = () => {
+  useEffect(() => {
+    if (authUserData) {
+      setRememberMe(authUserData?.is_remember);
+      setEmail(authUserData?.remember_email);
+      setPassword(authUserData?.remember_password);
+    }
+  }, [authUserData]);
+
+  const handleSignUp = () => {
+    // console.log(navigation);
     navigation.navigate('SignUp');
   };
 
-  const handleRememberMe = () => {
-    dispatch(toggleRememberMe());
-    // setRememberMe(!rememberMe);
+  const handleLogin = () => {
+    let all_users = authUserData?.all_users;
+    let selectedUser = all_users.filter(
+      user => user.email == email && user.password == password,
+    );
+    console.log(selectedUser, 'selectedUser....');
+
+    if (selectedUser.length != 0) {
+      dispatch(login(selectedUser[0], rememberMe, navigation));
+    } else {
+      Alert.alert('User does not exist');
+    }
   };
 
   return (
     <View style={styles.mainContainer}>
-      <Text style={{fontSize: 40, marginBottom: 10}}>Log In </Text>
+      <Text
+        style={{
+          fontSize: 40,
+          marginBottom: 10,
+          fontFamily: 'VinaSans-Regular',
+        }}>
+        Log In form
+      </Text>
       <TextInput
         style={styles.input}
         placeholder="Email"
@@ -163,7 +198,8 @@ const LoginScreen = ({navigation}) => {
       {/* <Button title="Login" onPress={handleLogin} /> */}
       {/* <Button title="Sign Up" onPress={navigateToSignUp} /> */}
       <TouchableOpacity
-        onPress={navigateToSignUp}
+        // onPress={navigateToSignUp}
+        onPress={handleSignUp}
         style={styles.RegisterButton}>
         <Text
           style={{

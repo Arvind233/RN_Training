@@ -16,7 +16,7 @@ const persistConfig = {
 };
 
 //const reducer = combineReducers(reducers);
-const persistedReducer = persistReducer(persistConfig, reducer);
+const persistedReducer = persistReducer(persistConfig, reducers.authReducer);
 
 // Passing counterReducer to createStore
 const store = configureStore({

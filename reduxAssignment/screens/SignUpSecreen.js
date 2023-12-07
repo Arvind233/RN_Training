@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {signUp} from '../actions/actions';
+import {registerUserData} from '../actions/actions';
 
 const SignUpScreen = ({navigation}) => {
   const [name, setName] = useState('');
@@ -16,13 +16,15 @@ const SignUpScreen = ({navigation}) => {
   const [password, setPassword] = useState('');
   const [phone, setPhone] = useState('');
   const dispatch = useDispatch();
+  const user = useSelector(state => state.user);
+  console.log('sign up', user);
   // const signUpSuccess = useSelector(state => state.signUpSuccess);
 
   // console.log('all user', user);
 
   const handleSignUp = () => {
-    const newUser = {name, email, password, phone};
-    console.log('new user', newUser);
+    // const newUser = {name, email, password, phone};
+    // console.log('new user', newUser);
     // dispatch(signUp(newUser));
 
     if (!name) {
@@ -45,7 +47,8 @@ const SignUpScreen = ({navigation}) => {
       return;
     }
 
-    dispatch(signUp(newUser));
+    // dispatch(signUp(newUser));
+    dispatch(registerUserData({name, email, phone, password}, navigation));
 
     Alert.alert('Registration Successful', 'You can now log in!');
     // Navigate back to the login screen

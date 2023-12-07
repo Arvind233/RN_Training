@@ -1,0 +1,17 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "assets/fonts/DancingScript-VariableFont_wght.ttf",
+      "sha1": "80f13e7575ec59a51b7fdc42bb0b9d7a34439123"
+    },
+    {
+      "path": "assets/fonts/Italianno-Regular.ttf",
+      "sha1": "1d0fca4d186f74e1567d7aef33998fea1d837284"
+    },
+    {
+      "path": "assets/fonts/VinaSans-Regular.ttf",
+      "sha1": "3badc1a710a8d7f0af761dd6bb34ad35e02ed214"
+    }
+  ]
+}
