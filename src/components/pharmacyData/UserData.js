@@ -2,7 +2,6 @@ import React, {useState, useEffect} from 'react';
 import {View, Text, FlatList, StyleSheet, TouchableOpacity} from 'react-native';
 
 import UserModal from '../pharmacyModal/UserModal';
-
 const UserData = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [allPharmacy, setAllPharmacy] = useState([]);
@@ -83,7 +82,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'blue',
     borderRadius: 100,
     alignItems: 'center',
-    width: 365,
+
     paddingVertical: 5,
     marginVertical: 10,
   },
